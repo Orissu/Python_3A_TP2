@@ -2,7 +2,7 @@
 @bastien.rossiaud
 bastien.rossiaud@cpe.fr
 26/09/2024
-to do : tout le coding des fonctions en dur (voir feuille pour algo)
+to do : revoir la derniere fonction
 """
 
 
@@ -12,7 +12,7 @@ to do : tout le coding des fonctions en dur (voir feuille pour algo)
 #Types
 entrees = (0,1,2,3,4,5)
 etats = (0,1,2,3,4,5,6,7)
-sorties = (8,9)
+sorties = [8,9] #état 8 : erreur; état 9 : validation;
 
 #Variable
 table_de_transitions = [[1,8,8,8,4,8],
@@ -36,7 +36,7 @@ def saisir_entree():
     in : str (la phrase)
     out : lst de str
     """
-    phrase = str(input("Veuillez rentrer une phrase avec les mots du dictionnaire suivant : ",dictionnaire))
+    phrase = str(input("Veuillez rentrer une phrase avec les mots du dictionnaire : " ))
     return phrase.split()
 
 def verif_entree(phrase):
@@ -58,7 +58,7 @@ def transformation(liste):
     """
     liste_valeurs = []
     for element in liste : 
-        liste_valeurs = liste_valeurs.append(dictionnaire[element])
+        liste_valeurs.append(dictionnaire[element])
     return liste_valeurs
 
 def action_selon_sortie(etat_act,liste,i):
@@ -68,12 +68,9 @@ def action_selon_sortie(etat_act,liste,i):
     out : un booleen si on est à la fin de la phrase ou si la phrase est fausse. peut renvoyer un int etat_act pour passer à l'état suivant.
     """
     if etat_act == sorties[0] :
-        print("Ceci n'est pas une phrase valide !")
         return False
     elif etat_act == sorties[1] : 
-        print("Ceci est une phrase valide !")
         return True
     else : 
-        etat_act = table_de_transitions[liste[i],liste[i+1]]
+        etat_act = table_de_transitions[liste[i]][liste[i+1]]
         return etat_act
-
