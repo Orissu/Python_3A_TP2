@@ -2,9 +2,11 @@
 @bastien.rossiaud
 bastien.rossiaud@cpe.fr
 26/09/2024
-to do : revoir la derniere fonction
+to do : None
 """
 
+import re as r #import d'une bibliothèque pour la méthode split 
+                # elle va permettre de filtrer les caractères spéciaux
 
 #définition de l'automate par son alphabet d'entrées, son alphabet de sortie et son ensemble d'état
 #on rajoute à cela une table de transitions
@@ -22,7 +24,9 @@ table_de_transitions = [[1,8,8,8,4,8],
                         [8,8,8,3,8,8],
                         [8,5,6,8,8,8],
                         [8,6,8,8,8,9],
-                        [8,8,8,8,8,9]]
+                        [8,8,8,8,8,9],
+                        [8,8,8,8,8,8],
+                        [9,9,9,9,9,9]]
 
 
 #définition du dictionnaire de mots
@@ -32,12 +36,22 @@ dictionnaire = { "le" : 0, "la" : 0, "chat" : 2, "souris" : 2, "martin" : 4,
 
 def saisir_entree():
     """
-    fonction qui permet de rentrer une phrase et la sépare par mot
-    in : str (la phrase)
-    out : lst de str
+    fonction qui permet de rentrer une phrase.
+    in : None
+    out : str
     """
     phrase = str(input("Veuillez rentrer une phrase avec les mots du dictionnaire : " ))
-    return phrase.split()
+    return phrase
+
+def transformation_str_lst(phrase) :
+    """fonction qui transforme un string en lst de str
+    in : str
+    out : lst de str"""
+    res = r.split(r'[^\w]+',phrase)    #permet de séparer par caractère spécial
+    res.pop(-1)         #enlève l'élément vide du au re.split
+    if phrase[-1] == '.' : 
+        res.append('.')     #on rajoute le . s'il y en a un
+    return res
 
 def verif_entree(phrase):
     """
@@ -50,7 +64,7 @@ def verif_entree(phrase):
             return False
     return True
 
-def transformation(liste):
+def transformation_lst_int(liste):
     """
     fonction qui transforme une liste de str en une liste de valeur par rapport au dictionnaire de référence "dictionnaire"
     in : lst de str
@@ -61,16 +75,9 @@ def transformation(liste):
         liste_valeurs.append(dictionnaire[element])
     return liste_valeurs
 
-def action_selon_sortie(etat_act,liste,i):
+def validite(etat_act):
     """
-    fonction qui transforme l'état actuel en l'état d'après selon les entrées. Elle suit le/la schéma/table de transition.
-    in : etat_act un entier qui correspond à l'état actuel. liste est une liste contenant les mots de la phrase à vérifier transformées en valeurs.
-    out : un booleen si on est à la fin de la phrase ou si la phrase est fausse. peut renvoyer un int etat_act pour passer à l'état suivant.
-    """
-    if etat_act == sorties[0] :
-        return False
-    elif etat_act == sorties[1] : 
-        return True
-    else : 
-        etat_act = table_de_transitions[liste[i]][liste[i+1]]
-        return etat_act
+    fonction qui vérifie la validité de la phrase.
+    in : etat_act un entier qui correspond à l'état actuel. 
+    out : un booléen vérifiant la validité de la phrase """
+    return etat_act == sorties[1]
